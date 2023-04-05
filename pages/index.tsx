@@ -19,13 +19,13 @@ export default function Home() {
     }
   }
 
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
     setErrorMessage('')
     setInputStyle('border border-[#D6D7DA] rounded-md px-3 py-2 w-full text-2xl my-4 shadow-sm placeholder:text-[#808B96] focus:outline-[#3063D6]')
   }
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleUnlock()
     }
