@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { FiUpload } from 'react-icons/fi'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { useSpring, animated, config } from 'react-spring';
 import { Button, Progress, Space, message, notification } from 'antd'
@@ -18,6 +18,21 @@ const close = () => {
 
 
 export default function Upload() {
+    //Rest Form
+    const resetForm = () => {
+      setSelectedGrade('');
+      setSelectedTerm('');
+      setSelectedTopic('');
+      setProgressUpload(0);
+      setDownloadURL('');
+      setName('');
+      setFileName('');
+      setPdfFile(null);
+      setShowProgressBar(false);
+      fileInputRef.current.value = ''; // Add this line to clear the file input value
+    };
+    
+
     const [selectedGrade, setSelectedGrade] = useState('');
     const [selectedTerm, setSelectedTerm] = useState('');
     const [selectedTopic, setSelectedTopic] = useState('');
@@ -30,6 +45,7 @@ export default function Upload() {
 
     const [showProgressBar, setShowProgressBar] = useState(false);
 
+    const fileInputRef = useRef();
 
     const openLink = () => {
       const newWindow = window.open(downloadURL, "_blank", "noopener,noreferrer");
@@ -168,6 +184,11 @@ export default function Upload() {
                   term: selectedTerm,
                   topic: selectedTopic,
                 });
+
+                setTimeout(() => {
+                  // Call the resetForm function to clear the input fields and reset the state
+                  resetForm();
+                }, 150);
               });
             }
           );
@@ -190,7 +211,7 @@ export default function Upload() {
         <animated.div style={popUpAnimation} className='p-5 bg-white rounded-xl'>
           <h1>Upload Document</h1>
           <div className='w-[350px] border-dashed border-2 border-[#DEDDDF] p-5 rounded-md my-3'>
-            <input type='file' accept='application/pdf' className='w-full file:bg-[#DEDDDF] file:border-0 file:rounded-full file:px-4 file:py-2 file:mr-4 file:transition-all file:hover:bg-[#c8c8c8]' onChange={(files) => handleFileChange(files.target.files)}/>
+            <input type='file' ref={fileInputRef} accept='application/pdf' className='w-full file:bg-[#DEDDDF] file:border-0 file:rounded-full file:px-4 file:py-2 file:mr-4 file:transition-all file:hover:bg-[#c8c8c8]' onChange={(files) => handleFileChange(files.target.files)}/>
           </div>
             {
               pdfFile && 
@@ -216,7 +237,7 @@ export default function Upload() {
           <div className='border-t border-[#EBECF0] py-3 flex flex-col gap-4'>
             <div>
               <h1>Name</h1>
-              <input type='text' placeholder='Your files name' maxlength='20' className='border border-[#D6D7DA] rounded-md px-3 py-2 w-full text-[14px] my-2 shadow-sm placeholder:text-[#808B96] focus:outline-[#1D1D21]' onChange={(names) => handleNameChange(names.target.value)}/>
+              <input type='text' value={name} placeholder='Your files name' maxlength='20' className='border border-[#D6D7DA] rounded-md px-3 py-2 w-full text-[14px] my-2 shadow-sm placeholder:text-[#808B96] focus:outline-[#1D1D21]' onChange={(names) => handleNameChange(names.target.value)}/>
             </div>
             <div>
               <h1>Topic</h1>
@@ -250,7 +271,6 @@ export default function Upload() {
                 <option value="null">- Select -</option>
                 <option value="Grade 10">Grade 10</option>
                 <option value="Grade 11">Grade 11</option>
-                <option value="Grade 12">Grade 12</option>
               </select>
             </div>
             <div>
@@ -264,6 +284,7 @@ export default function Upload() {
                 <option value="Term 1">Term 1</option>
                 <option value="Term 2">Term 2</option>
                 <option value="Term 3">Term 3</option>
+                <option value="Term 4">Term 4</option>
               </select>
             </div>
           </div> 
