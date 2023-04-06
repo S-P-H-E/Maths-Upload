@@ -11,7 +11,7 @@ export default function Home() {
   const [inputStyle, setInputStyle] = useState('text-white bg-transparent rounded-full pl-6 py-3 w-full text-md placeholder:text-[#808B96] outline-none')
 
   const handleUnlock = () => {
-    if (password === '13596') {
+    if (password === 'j4D8mR2Q') {
       localStorage.setItem('unlocked', 'true')
       message.success('Login Successful')
       router.push('/upload')
